@@ -1,0 +1,89 @@
+import React from "react";
+import { Button } from "../ui/Button";
+import editIcon from "../../assets/edit-02.png";
+import { Building2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+export function AuditorProfile({
+  name,
+  company,
+  department,
+  role,
+  imageUrl,
+  id,
+  type
+}) {
+  const navigate = useNavigate();
+
+  
+  const handleEdit = () => {
+    console.log(id);
+    if(type === "auditor"){
+      navigate(`/add-auditor/${id}`);
+    }
+    else{
+      navigate(`/add-customer/${id}`);
+    }
+    
+  };
+
+  return (
+    <div className="bg-white p-6 rounded-lg border border-gray-200 mb-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="font-inter font-medium text-lg leading-7">Profile</h2>
+        <Button
+          onClick={handleEdit}
+          variant="outline"
+          className="text-sm px-4 bg-[#DBEEED] text-[#2F9089]"
+        >
+          <img src={editIcon} alt="" className="mr-2" />
+          Edit Profile
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#E0EFEE]">
+            <img src={imageUrl} alt="" />
+          </div>
+          <div>
+            <span className="block text-xs text-gray-500 mb-1">Full Name</span>
+            <p className="text-sm font-medium">{name}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#E0EFEE]">
+            <Building2 />
+          </div>
+          <div>
+            <span className="block text-xs text-gray-500 mb-1">
+              Office/Branch
+            </span>
+            <p className="text-sm font-medium">{company}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#E0EFEE]">
+            <Building2 />
+          </div>
+          <div>
+            <span className="block text-xs text-gray-500 mb-1">Department</span>
+            <p className="text-sm font-medium">{department}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#E0EFEE]">
+            <Building2 />
+          </div>
+          <div>
+            <span className="block text-xs text-gray-500 mb-1">Role</span>
+            <p className="text-sm font-medium">{role}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

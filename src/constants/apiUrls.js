@@ -1,0 +1,1 @@
+export const url = "http://Authentication-314866624.ap-south-1.elb.amazonaws.com/api/auth/"

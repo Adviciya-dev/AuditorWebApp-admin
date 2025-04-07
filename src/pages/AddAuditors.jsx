@@ -60,9 +60,21 @@ export default function AddAuditor() {
       .max(255, "Address must be between 5 and 255 characters"),
     postalCode: Yup.string()
       .required("Postal Code is required")
-      .matches(/^\d{5}(-\d{4})?$/, "Invalid Postal Code format"),
+      .matches(
+        /^[A-Za-z0-9]{4,10}$/,
+        "Postal Code must be 4-10 alphanumeric characters"
+      ),
     timeZone: Yup.string().required("Time Zone is required"),
-    registeredNumber: Yup.string().required("Business Number is required"),
+    registeredNumber: Yup.string()
+      .required("Business Number is required")
+      .min(6, "Business Number must be at least 6 characters")
+      .matches(/^[A-Za-z0-9]+$/, "Business Number must be alphanumeric"),
+    website: Yup.string()
+      .matches(
+        /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/,
+        "Invalid website format (e.g., www.example.com)"
+      )
+      .nullable(),
     contactPerson: Yup.string()
       .required("Contact Person name is required")
       .min(2, "Contact Person name must be between 2 and 100 characters")
@@ -313,11 +325,10 @@ export default function AddAuditor() {
               <CustomSelect
                 label="Select Time Zone"
                 options={timeZoneOptions}
-                onChange={(value) => setTimeZone(value)}
-                // value={formik.values.timeZone}
-                // onChange={(value) => formik.setFieldValue('timeZone', value)}
-                // name="timeZone"
-                // error={formik.touched.timeZone && formik.errors.timeZone}
+                value={formik.values.timeZone}
+                onChange={(value) => formik.setFieldValue("timeZone", value)}
+                name="timeZone"
+                error={formik.touched.timeZone && formik.errors.timeZone}
               />
               <CustomInput
                 label="Registered Business Number"

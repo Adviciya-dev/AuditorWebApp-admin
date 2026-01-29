@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "../ui/Button";
 import editIcon from "../../assets/edit-02.png";
-import { Building2, KeyRound } from "lucide-react";
+import { Building2, KeyRound, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ResetPasswordModal from "../ui/ResetPasswordModal";
+import { useAuditors } from "../../hooks/auditors/useAuditors";
 
 export function AuditorProfile({
   name,
@@ -12,11 +13,22 @@ export function AuditorProfile({
   role,
   imageUrl,
   id,
-  type
+  type,
+  onDelete
 }) {
   const navigate = useNavigate();
+  const { deleteAuditor, isDeleting } = useAuditors();
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to delete this auditor?")) {
+      deleteAuditor(id, {
+        onSuccess: () => {
+          if (onDelete) onDelete();
+        },
+      });
+    }
+  };
 
   const handleEdit = () => {
     console.log(id);
@@ -49,6 +61,15 @@ export function AuditorProfile({
           >
             <img src={editIcon} alt="" className="mr-2" />
             Edit Profile
+          </Button>
+          <Button
+            onClick={handleDelete}
+            variant="outline"
+            className="text-sm px-4 bg-[#FDE8E8] text-[#DC2626]"
+            disabled={isDeleting}
+          >
+            <Trash2 size={16} className="mr-2" />
+            {isDeleting ? "Deleting..." : "Delete"}
           </Button>
         </div>
       </div>

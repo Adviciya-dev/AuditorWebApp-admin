@@ -215,7 +215,7 @@ export function AuditorTab() {
               department={auditorData.department || "---"}
               role={auditorData.role || "---"}
               imageUrl={auditorData.image}
-              id={auditorData.id}
+              id={auditorData.auditor_id}
               type="auditor"
               onDelete={() => {
                 setAuditorData(null);

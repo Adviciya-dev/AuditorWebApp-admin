@@ -8,8 +8,8 @@ export const API_CONFIG = {
 
     AUDITORS: {
       BASE: 'auditor',
-      LOGIN:"auditor/login"
-      
+      LOGIN:"auditor/login",
+      UPDATE_PASSWORD:'update-password'
     },
     CUSTOMER: {
       BASE: 'customer',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../ui/Button';
 
-export function AuditorCard({ name, companyname, description, imageUrl,isSelected,onViewProfile,btnLabel="View Profile",contactperson }) {
+export function AuditorCard({ name, companyname, description, imageUrl,isSelected,onViewProfile,btnLabel="View Profile",contactperson, person_email }) {
     return (
        
             <div className="bg-white p-6 rounded-lg border border-gray-200 flex flex-col h-full">
@@ -13,6 +13,7 @@ export function AuditorCard({ name, companyname, description, imageUrl,isSelecte
                     />
                     <div>
                         <h3 className="font-inter font-medium text-base leading-6">{contactperson}</h3>
+                        {person_email && <p className="font-inter font-normal text-sm leading-5 text-[#525866]">{person_email}</p>}
                     </div>
                 </div>
                 <p className="font-inter font-semibold text-base leading-[24px] mb-2">{companyname}</p>

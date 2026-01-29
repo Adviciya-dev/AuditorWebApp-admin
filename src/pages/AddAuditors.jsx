@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { auditorsApi } from "../api/auditor";
+import { auditorsApi, fetchAuditor } from "../api/auditor";
 import { useCustomQuery } from "../service/useQueryFetchData";
 import { API_CONFIG, ENDPOINTS } from "../config";
 import { useCustomMutation } from "../service/useCustomMutation ";
@@ -41,10 +41,10 @@ export default function AddAuditor() {
   const finantialYearList = [{ value: "04-11", label: "april-11" }];
 
   const { data, error, isLoading } = useCustomQuery(
-    "auditors",
-    auditorsApi.getAuditors,
-    auditorId ? { auditorId } : undefined,
-    { enabled: !!auditorId }
+    auditorId ? `auditor-${auditorId}` : "auditor-none",
+    fetchAuditor,
+    {},
+    auditorId
   );
   console.log(auditorId);
   console.log(data);
@@ -177,6 +177,7 @@ export default function AddAuditor() {
         url,
         values: finalBodyToApi,
         key: "auditors",
+        next: () => navigate("/"),
       });
     },
   });
@@ -203,7 +204,7 @@ export default function AddAuditor() {
           auditorName: apiData.name || "",
           designation: apiData.designation || "",
           auditorNumber: apiData.phone_number || "",
-          auditorEmail: apiData.auditor_details?.person_email || "",
+          auditorEmail: apiData.person_email || "",
         });
       }
     }

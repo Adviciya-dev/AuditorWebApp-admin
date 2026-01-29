@@ -217,6 +217,11 @@ export function AuditorTab() {
               imageUrl={auditorData.image}
               id={auditorData.id}
               type="auditor"
+              onDelete={() => {
+                setAuditorData(null);
+                setActiveAuditorId(null);
+                setSelectedCard(null);
+              }}
             />
           )}
         </div>

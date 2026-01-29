@@ -40,7 +40,7 @@ export default function AddAuditor() {
 
   const finantialYearList = [{ value: "04-11", label: "april-11" }];
 
-  const { data, error, isLoading } = useCustomQuery(
+  const { data } = useCustomQuery(
     auditorId ? `auditor-${auditorId}` : "auditor-none",
     fetchAuditor,
     {},

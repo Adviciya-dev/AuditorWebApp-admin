@@ -183,30 +183,28 @@ export default function AddAuditor() {
   });
 
   useEffect(() => {
-    if (data) {
-      if (data && auditorId) {
-        const apiData = data[0];
-        formik.setValues({
-          companyName: apiData.companyname || "",
-          physicalAddress: apiData.address || "",
-          postalCode: apiData.postalcode || "",
-          timeZone: apiData.timezone || "",
-          registeredNumber: apiData.businessnumber || "",
-          website: apiData.website || "",
-          contactPerson: apiData.contactperson || "",
-          contactNumber: apiData.contactnumber || "",
-          email: apiData.email || "",
-          fileFormat:
-            apiData.fileformat?.split(", ").map((item) => item.trim()) || "",
-          financialYearStart: apiData.financialyearstart || "",
-          dateFormat: apiData.dateformat || "",
-          currency: apiData.currency_format || "",
-          auditorName: apiData.name || "",
-          designation: apiData.designation || "",
-          auditorNumber: apiData.phone_number || "",
-          auditorEmail: apiData.person_email || "",
-        });
-      }
+    if (auditorId && data && Array.isArray(data) && data.length > 0) {
+      const apiData = data[0];
+      formik.setValues({
+        companyName: apiData.companyname || "",
+        physicalAddress: apiData.address || "",
+        postalCode: apiData.postalcode || "",
+        timeZone: apiData.timezone || "",
+        registeredNumber: apiData.businessnumber || "",
+        website: apiData.website || "",
+        contactPerson: apiData.contactperson || "",
+        contactNumber: apiData.contactnumber || "",
+        email: apiData.email || "",
+        fileFormat:
+          apiData.fileformat?.split(", ").map((item) => item.trim()) || [],
+        financialYearStart: apiData.financialyearstart || "",
+        dateFormat: apiData.dateformat || "",
+        currency: apiData.currency_format || "",
+        auditorName: apiData.name || "",
+        designation: apiData.designation || "",
+        auditorNumber: apiData.phone_number || "",
+        auditorEmail: apiData.person_email || "",
+      });
     }
   }, [data, auditorId]);
 

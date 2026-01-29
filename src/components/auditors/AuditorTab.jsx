@@ -18,11 +18,13 @@ import { fetchAuditor } from "../../api/auditor";
 export function AuditorTab() {
   const navigate = useNavigate();
   const columnHelper = createColumnHelper();
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
   const {
     data: auditors,
     error,
     isLoading,
-  } = useCustomQuery("auditors", fetchAuditor);
+  } = useCustomQuery("auditors", fetchAuditor, { page: currentPage, pageSize });
   const [selectedCard, setSelectedCard] = useState(null);
   const [activeAuditorId, setActiveAuditorId] = useState(null);
   const [auditorData, setAuditorData] = useState(null);
@@ -182,6 +184,27 @@ export function AuditorTab() {
               </div>
             ))}
           </div>
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between pt-2">
+          <p className="text-sm text-[#525866]">Page {currentPage}</p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              disabled={!auditors || auditors.length < pageSize}
+              className="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
 
         {/* Profile Section */}
         <div className="mt-4">

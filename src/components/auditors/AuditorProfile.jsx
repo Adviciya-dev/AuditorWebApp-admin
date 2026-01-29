@@ -65,11 +65,11 @@ export function AuditorProfile({
           <Button
             onClick={handleDelete}
             variant="outline"
-            className="text-sm px-4 bg-[#FDE8E8] text-[#DC2626]"
+            className="text-sm px-4 border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626] hover:text-white transition-colors duration-200"
             disabled={isDeleting}
           >
             <Trash2 size={16} className="mr-2" />
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? "Deleting..." : "Delete Profile"}
           </Button>
         </div>
       </div>

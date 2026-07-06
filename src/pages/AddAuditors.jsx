@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { auditorsApi } from "../api/auditor";
+import { auditorsApi, fetchAuditor } from "../api/auditor";
 import { useCustomQuery } from "../service/useQueryFetchData";
 import { API_CONFIG, ENDPOINTS } from "../config";
 import { useCustomMutation } from "../service/useCustomMutation ";
@@ -40,11 +40,11 @@ export default function AddAuditor() {
 
   const finantialYearList = [{ value: "04-11", label: "april-11" }];
 
-  const { data, error, isLoading } = useCustomQuery(
-    "auditors",
-    auditorsApi.getAuditors,
-    auditorId ? { auditorId } : undefined,
-    { enabled: !!auditorId }
+  const { data } = useCustomQuery(
+    auditorId ? `auditor-${auditorId}` : "auditor-none",
+    fetchAuditor,
+    {},
+    auditorId
   );
   console.log(auditorId);
   console.log(data);
@@ -177,35 +177,34 @@ export default function AddAuditor() {
         url,
         values: finalBodyToApi,
         key: "auditors",
+        next: () => navigate("/"),
       });
     },
   });
 
   useEffect(() => {
-    if (data) {
-      if (data && auditorId) {
-        const apiData = data[0];
-        formik.setValues({
-          companyName: apiData.companyname || "",
-          physicalAddress: apiData.address || "",
-          postalCode: apiData.postalcode || "",
-          timeZone: apiData.timezone || "",
-          registeredNumber: apiData.businessnumber || "",
-          website: apiData.website || "",
-          contactPerson: apiData.contactperson || "",
-          contactNumber: apiData.contactnumber || "",
-          email: apiData.email || "",
-          fileFormat:
-            apiData.fileformat?.split(", ").map((item) => item.trim()) || "",
-          financialYearStart: apiData.financialyearstart || "",
-          dateFormat: apiData.dateformat || "",
-          currency: apiData.currency_format || "",
-          auditorName: apiData.name || "",
-          designation: apiData.designation || "",
-          auditorNumber: apiData.phone_number || "",
-          auditorEmail: apiData.auditor_details?.person_email || "",
-        });
-      }
+    if (auditorId && data && Array.isArray(data) && data.length > 0) {
+      const apiData = data[0];
+      formik.setValues({
+        companyName: apiData.companyname || "",
+        physicalAddress: apiData.address || "",
+        postalCode: apiData.postalcode || "",
+        timeZone: apiData.timezone || "",
+        registeredNumber: apiData.businessnumber || "",
+        website: apiData.website || "",
+        contactPerson: apiData.contactperson || "",
+        contactNumber: apiData.contactnumber || "",
+        email: apiData.email || "",
+        fileFormat:
+          apiData.fileformat?.split(", ").map((item) => item.trim()) || [],
+        financialYearStart: apiData.financialyearstart || "",
+        dateFormat: apiData.dateformat || "",
+        currency: apiData.currency_format || "",
+        auditorName: apiData.name || "",
+        designation: apiData.designation || "",
+        auditorNumber: apiData.phone_number || "",
+        auditorEmail: apiData.person_email || "",
+      });
     }
   }, [data, auditorId]);
 

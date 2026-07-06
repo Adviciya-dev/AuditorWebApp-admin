@@ -49,6 +49,16 @@ export const auditorsApi = {
 
 
 
+export const resetAuditorPassword = async (auditorId, newPassword) => {
+  const response = await ApiCall(
+    API_CONFIG.BASE_URL,
+    "PUT",
+    `${ENDPOINTS.AUDITORS.UPDATE_PASSWORD}/${auditorId}`,
+    { newPassword }
+  );
+  return response;
+}
+
 // new
 export const fetchAuditor = async (params,id) =>{
   console.log(id);

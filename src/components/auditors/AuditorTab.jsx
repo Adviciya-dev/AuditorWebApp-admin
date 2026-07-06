@@ -14,6 +14,7 @@ import { Button } from "../ui/Button";
 import menuButton from "../../assets/Compact Button [1.0].png";
 import { useCustomQuery } from "../../service/useQueryFetchData";
 import { fetchAuditor } from "../../api/auditor";
+
 export function AuditorTab() {
   const navigate = useNavigate();
   const columnHelper = createColumnHelper();
@@ -27,6 +28,15 @@ export function AuditorTab() {
     pageSize: pagination.pageSize,
   });
   const [selectedCard, setSelectedCard] = useState(null);
+  const [activeAuditorId, setActiveAuditorId] = useState(null);
+  const [auditorData, setAuditorData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleViewProfile = (auditor) => {
+    console.log("Selected auditor:", auditor);
+    setActiveAuditorId(auditor.id);
+    setAuditorData(auditor);
+  };
 
   const statuses = [
     {
@@ -109,6 +119,16 @@ export function AuditorTab() {
     }),
   ];
 
+  const filteredAuditors = auditors?.filter((auditor) => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      auditor.name?.toLowerCase().includes(query) ||
+      auditor.contactperson?.toLowerCase().includes(query) ||
+      auditor.companyname?.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="space-y-6 p-6 ">
       {/* Auditor Cards */}
@@ -133,28 +153,36 @@ export function AuditorTab() {
               type="text"
               placeholder="Search..."
               className="pl-10 pr-4 py-2 border rounded-lg w-64 h-[36px]"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
               <img src={search} alt="" />
             </span>
           </div>
-          <button className="ml-2 px-4 py-2 bg-[#000] button-text text-[#fff] rounded-lg hover:bg-[#000] flex h-[36px]">
-            Search
-          </button>
         </div>
      
           <div className="flex flex-wrap pb-4 gap-4">
             {auditors?.map((auditor) => (
               <div
-                key={auditor.name}
-                onClick={() => setSelectedCard(auditor.name)}
+                key={auditor.id}
+                onClick={() => {
+                  setSelectedCard(auditor.id);
+                  handleViewProfile(auditor);
+                }}
                 className={`cursor-pointer transition-all duration-300 min-w-[300px] ${
-                  selectedCard === auditor.name
+                  activeAuditorId === auditor.id
                     ? "border-blue-500 scale-105 shadow-lg"
                     : "border-gray-200 scale-100"
                 }`}
               >
-                <AuditorCard key={auditor.name} {...auditor} />
+                <AuditorCard
+                  {...auditor}
+                  imageUrl={auditor.image}
+                  isSelected={activeAuditorId === auditor.id}
+                  onViewProfile={() => handleViewProfile(auditor)}
+                  btnLabel="View Profile"
+                />
               </div>
             ))}
           </div>
@@ -188,13 +216,47 @@ export function AuditorTab() {
 
       </div>
 
-      {/* Profile Section */}
-      <AuditorProfile
-        name="Emon Pixels"
-        company="Dazhboards Pty. Ltd"
-        department="Sales"
-        role="Auditing Specialist"
-      />
+        {/* Pagination */}
+        <div className="flex items-center justify-between pt-2">
+          <p className="text-sm text-[#525866]">Page {currentPage}</p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              disabled={!auditors || auditors.length < pageSize}
+              className="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+
+        {/* Profile Section */}
+        <div className="mt-4">
+          {auditorData && (
+            <AuditorProfile
+              name={auditorData.contactperson || auditorData.name}
+              company={auditorData.companyname || auditorData.office}
+              department={auditorData.department || "---"}
+              role={auditorData.role || "---"}
+              imageUrl={auditorData.image}
+              id={auditorData.auditor_id}
+              type="auditor"
+              onDelete={() => {
+                setAuditorData(null);
+                setActiveAuditorId(null);
+                setSelectedCard(null);
+              }}
+            />
+          )}
+        </div>
+      </div>
 
       {/* Document Status */}
       <DocumentStatus statuses={statuses} />

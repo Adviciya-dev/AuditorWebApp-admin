@@ -162,15 +162,15 @@ export function AuditorTab() {
           </div>
         </div>
      
-          <div className="flex flex-wrap pb-4 gap-4">
-            {auditors?.map((auditor) => (
+          <div className="grid grid-cols-3 gap-4 pb-4">
+            {filteredAuditors?.map((auditor) => (
               <div
                 key={auditor.id}
                 onClick={() => {
                   setSelectedCard(auditor.id);
                   handleViewProfile(auditor);
                 }}
-                className={`cursor-pointer transition-all duration-300 min-w-[300px] ${
+                className={`cursor-pointer transition-all duration-300 w-full ${
                   activeAuditorId === auditor.id
                     ? "border-blue-500 scale-105 shadow-lg"
                     : "border-gray-200 scale-100"
@@ -216,27 +216,6 @@ export function AuditorTab() {
 
       </div>
 
-        {/* Pagination */}
-        <div className="flex items-center justify-between pt-2">
-          <p className="text-sm text-[#525866]">Page {currentPage}</p>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              disabled={!auditors || auditors.length < pageSize}
-              className="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-
         {/* Profile Section */}
         <div className="mt-4">
           {auditorData && (
@@ -256,7 +235,6 @@ export function AuditorTab() {
             />
           )}
         </div>
-      </div>
 
       {/* Document Status */}
       <DocumentStatus statuses={statuses} />

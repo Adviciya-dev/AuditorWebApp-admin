@@ -9,7 +9,8 @@ export const fetchCustomer = async (params,id) =>{
     
     const response = await ApiCall(API_CONFIG.BASE_URL,"GET",`${id ? `${ENDPOINTS.CUSTOMER.BASE}/${id}` : ENDPOINTS.CUSTOMER.BASE}`,null,params);
     if(response?.status){
-      return response.data
+      const data = response.data;
+      return Array.isArray(data) ? data : (data?.data ?? [])
     }
     else{
       return []

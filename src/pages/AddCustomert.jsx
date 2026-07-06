@@ -371,11 +371,10 @@ export default function AddCustomer() {
               </div>
               <CustomSelect
                 label="Select Auditor"
-                // options={data?.map((obj) => ({
-                //   label: obj?.name,
-                //   value: obj?.auditor_id,
-                // }))}
-                options={[{label:auditorName,value:auditorId}]}
+                options={data?.map((obj) => ({
+                  label: obj?.name,
+                  value: obj?.auditor_id,
+                }))}
                 value={formik.values.auditor}
                 onChange={(value) => formik.setFieldValue("auditor", value)}
                 name="auditor"

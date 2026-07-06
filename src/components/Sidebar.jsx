@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useParams } from "react-router-dom";
-import { FaHome, FaCog, FaUserFriends, FaRegFileAlt, FaInfoCircle, FaUsers } from "react-icons/fa";
+import { FaHome, FaUserFriends, FaRegFileAlt, FaUsers } from "react-icons/fa";
 import homeIcon from "../assets/HomeHome.svg";
 import { Building2, FileText } from "lucide-react";
 function Sidebar() {
@@ -75,7 +75,7 @@ function Sidebar() {
                     <span>Auditor</span>
                 </NavLink>
 
-        <NavLink
+        {/* <NavLink
           to="/customer"
           className={({ isActive }) =>
             `flex items-center px-4 py-2 text-[#525866] label-small ${
@@ -96,34 +96,8 @@ function Sidebar() {
         >
           <FaRegFileAlt className="w-5 h-5 mr-3" />
           <span>Documents</span>
-        </NavLink>
+        </NavLink> */}
 
-        <div className="py-2 mt-4">
-          <p className="text-xs font-semibold text-gray-600 uppercase">Other</p>
-        </div>
-
-        <NavLink
-          to="/settings"
-          className={({ isActive }) =>
-            `flex items-center px-4 py-2 text-[#525866] label-small ${
-              isActive ? "bg-[#368FFD] text-[#ffff] rounded-lg" : ""
-            }`
-          }
-        >
-          <FaCog className="w-5 h-5 mr-3" />
-          <span>Settings</span>
-        </NavLink>
-        <NavLink
-          to="/help"
-          className={({ isActive }) =>
-            `flex items-center px-4 py-2 text-[#525866] label-small ${
-              isActive ? "bg-[#368FFD] text-[#ffff] rounded-lg" : ""
-            }`
-          }
-        >
-          <FaInfoCircle className="w-5 h-5 mr-3" />
-          <span>Help</span>
-        </NavLink>
       </nav>
     </div>
   );

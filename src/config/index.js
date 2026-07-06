@@ -13,9 +13,9 @@ export const API_CONFIG = {
 
     AUDITORS: {
       BASE: 'auditor',
-      LOGIN:"auditor/login",
-      UPDATE_PASSWORD:'update-password',
-      DETAIL: (id) => `auditor/${id}`
+      LOGIN:"login"
+
+      
     },
     CUSTOMER: {
       BASE: 'customer',

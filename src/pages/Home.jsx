@@ -85,10 +85,16 @@ function Home() {
 
 
 
+   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+
    const { data, error, isLoading } = useCustomQuery(
        "auditors",
-       fetchAuditor
+       fetchAuditor,
+       { page: pagination.pageIndex + 1, pageSize: pagination.pageSize }
      );
+
+  const auditors = data ?? [];
+  const pageCount = -1; // total page count unknown; server returns one page per request
 
   console.log(data);
   
@@ -243,8 +249,14 @@ function Home() {
               <hr className='my-4' />
 
               <DataTable
-                data={data || []}
+                data={auditors}
                 columns={columns}
+                showNavigation={true}
+                simpleNavigation={true}
+                manualPagination={true}
+                pageCount={pageCount}
+                pagination={pagination}
+                onPaginationChange={setPagination}
               />
             </div>
             <PerformanceTable />

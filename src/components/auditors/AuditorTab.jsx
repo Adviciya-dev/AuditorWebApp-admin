@@ -18,13 +18,15 @@ import { fetchAuditor } from "../../api/auditor";
 export function AuditorTab() {
   const navigate = useNavigate();
   const columnHelper = createColumnHelper();
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const {
     data: auditors,
     error,
     isLoading,
-  } = useCustomQuery("auditors", fetchAuditor, { page: currentPage, pageSize });
+  } = useCustomQuery("auditors", fetchAuditor, {
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize,
+  });
   const [selectedCard, setSelectedCard] = useState(null);
   const [activeAuditorId, setActiveAuditorId] = useState(null);
   const [auditorData, setAuditorData] = useState(null);
@@ -159,9 +161,9 @@ export function AuditorTab() {
             </span>
           </div>
         </div>
-
-          <div className="flex overflow-x-auto whitespace-nowrap pb-4 gap-4">
-            {filteredAuditors?.map((auditor) => (
+     
+          <div className="flex flex-wrap pb-4 gap-4">
+            {auditors?.map((auditor) => (
               <div
                 key={auditor.id}
                 onClick={() => {
@@ -184,6 +186,35 @@ export function AuditorTab() {
               </div>
             ))}
           </div>
+
+          <div className="flex items-center justify-end gap-2 mt-2">
+            <button
+              className="px-3 py-1 text-sm bg-gray-100 rounded-lg disabled:opacity-50"
+              onClick={() =>
+                setPagination((prev) => ({
+                  ...prev,
+                  pageIndex: Math.max(0, prev.pageIndex - 1),
+                }))
+              }
+              disabled={pagination.pageIndex === 0}
+            >
+              {'<'}
+            </button>
+            <button
+              className="px-3 py-1 text-sm bg-gray-100 rounded-lg disabled:opacity-50"
+              onClick={() =>
+                setPagination((prev) => ({
+                  ...prev,
+                  pageIndex: prev.pageIndex + 1,
+                }))
+              }
+              disabled={!auditors || auditors.length < pagination.pageSize}
+            >
+              {'>'}
+            </button>
+          </div>
+
+      </div>
 
         {/* Pagination */}
         <div className="flex items-center justify-between pt-2">

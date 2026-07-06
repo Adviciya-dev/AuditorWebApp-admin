@@ -26,12 +26,14 @@ import { url } from '../constants/apiUrls';
 import { format } from 'date-fns';
 import { useCustomQuery } from '../service/useQueryFetchData';
 import { auditorsApi, fetchAuditor } from '../api/auditor';
+import { useAuditors } from '../hooks/auditors/useAuditors';
 
 
 
 
 function Home() {
   const navigate = useNavigate();
+  const { deleteAuditor } = useAuditors();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all-branches');
@@ -90,7 +92,7 @@ function Home() {
    const { data, error, isLoading } = useCustomQuery(
        "auditors",
        fetchAuditor,
-       { page: pagination.pageIndex + 1, pageSize: pagination.pageSize }
+       { page: pagination.pageIndex + 1, pageSize: pagination.pageSize, search: searchQuery }
      );
 
   const auditors = data ?? [];
@@ -221,14 +223,18 @@ function Home() {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Search..."
+                      placeholder="Search company name"
                       className="pl-10 pr-4 py-2 border rounded-lg w-64 h-[36px]"
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+                      }}
                     />
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
                       <img src={search} alt="" />
                     </span>
                   </div>
-                  <button className="ml-2 px-4 py-2 bg-[#000] button-text text-[#fff] rounded-lg hover:bg-[#000] flex h-[36px]">Search</button>
 
                 </div>
 
@@ -271,6 +277,12 @@ const handleEdit=(id)=>{
   navigate(`/add-auditor/${id}`)
 }
 
+const handleDelete = (id) => {
+  if (window.confirm("Are you sure you want to delete this auditor?")) {
+    deleteAuditor(id);
+  }
+}
+
 const columnHelper = createColumnHelper();
 
 const columns = [
@@ -293,6 +305,9 @@ const columns = [
         </div>
       );
     },
+  }),
+  columnHelper.accessor('companyname', {
+    header: 'Company Name',
   }),
   columnHelper.accessor('designation', {
     header: 'Role',

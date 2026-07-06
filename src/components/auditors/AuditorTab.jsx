@@ -19,6 +19,7 @@ export function AuditorTab() {
   const navigate = useNavigate();
   const columnHelper = createColumnHelper();
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [searchQuery, setSearchQuery] = useState("");
   const {
     data: auditors,
     error,
@@ -26,11 +27,11 @@ export function AuditorTab() {
   } = useCustomQuery("auditors", fetchAuditor, {
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize,
+    search: searchQuery,
   });
   const [selectedCard, setSelectedCard] = useState(null);
   const [activeAuditorId, setActiveAuditorId] = useState(null);
   const [auditorData, setAuditorData] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const handleViewProfile = (auditor) => {
     console.log("Selected auditor:", auditor);
@@ -119,16 +120,6 @@ export function AuditorTab() {
     }),
   ];
 
-  const filteredAuditors = auditors?.filter((auditor) => {
-    if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      auditor.name?.toLowerCase().includes(query) ||
-      auditor.contactperson?.toLowerCase().includes(query) ||
-      auditor.companyname?.toLowerCase().includes(query)
-    );
-  });
-
   return (
     <div className="space-y-6 p-6 ">
       {/* Auditor Cards */}
@@ -151,10 +142,13 @@ export function AuditorTab() {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search company name"
               className="pl-10 pr-4 py-2 border rounded-lg w-64 h-[36px]"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+              }}
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
               <img src={search} alt="" />
@@ -163,7 +157,7 @@ export function AuditorTab() {
         </div>
      
           <div className="grid grid-cols-3 gap-4 pb-4">
-            {filteredAuditors?.map((auditor) => (
+            {auditors?.map((auditor) => (
               <div
                 key={auditor.id}
                 onClick={() => {

@@ -1,6 +1,11 @@
+// export const API_CONFIG = {
+//     BASE_URL: "https://login.pimins.ai/api/auth/",
+//     DOC_URL:"https://doc.pimins.ai/api/"
+//   };
+
 export const API_CONFIG = {
-    BASE_URL: "https://login.pimins.ai/api/auth/",
-    DOC_URL:"https://doc.pimins.ai/api/"
+    BASE_URL: "https://login.abs.ind.in/api/auth/",
+    DOC_URL:"https://doc.abs.ind.in/api/"
   };
 
 

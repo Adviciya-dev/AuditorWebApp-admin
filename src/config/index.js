@@ -13,7 +13,8 @@ export const API_CONFIG = {
 
     AUDITORS: {
       BASE: 'auditor',
-      LOGIN:"auditor/login"
+      LOGIN:"login"
+
       
     },
     CUSTOMER: {

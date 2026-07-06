@@ -14,6 +14,8 @@ export function CustomerTable({customers,columns}) {
       <DataTable
         data={customers}
         columns={columns}
+        showNavigation={true}
+        simpleNavigation={true}
       />
     </div>
   );

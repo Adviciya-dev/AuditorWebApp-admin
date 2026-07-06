@@ -8,7 +8,6 @@ function Header() {
     const location = useLocation();
     const navigate = useNavigate();
     const { logout } = useAuth();
-    const auditor_name=localStorage.getItem("auditor_name")
 
     const handleLogout = () => {
         logout();
@@ -20,7 +19,7 @@ function Header() {
         switch (location.pathname) {
             case '/':
                 // return 'Home';
-                return 'Auditor Dashboard';
+                return 'Admin Dashboard';
             case '/auditors':
                 return 'Auditors';
             case '/customer':
@@ -46,11 +45,11 @@ function Header() {
 
                 <div className="flex items-center space-x-2">
                     <img
-                        src={`https://ui-avatars.com/api/?name=${auditor_name}`}
+                        src={`https://ui-avatars.com/api/?name=Super Admin`}
                         alt="Profile"
                         className="w-8 h-8 rounded-full"
                     />
-                    <span className="label-small">{auditor_name}</span>
+                    <span className="label-small">Super Admin</span>
                 </div>
                 <button onClick={handleLogout}>
                   <Power  className='text-red-500' />

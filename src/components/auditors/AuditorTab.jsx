@@ -17,11 +17,15 @@ import { fetchAuditor } from "../../api/auditor";
 export function AuditorTab() {
   const navigate = useNavigate();
   const columnHelper = createColumnHelper();
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const {
     data: auditors,
     error,
     isLoading,
-  } = useCustomQuery("auditors", fetchAuditor);
+  } = useCustomQuery("auditors", fetchAuditor, {
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize,
+  });
   const [selectedCard, setSelectedCard] = useState(null);
 
   const statuses = [
@@ -139,7 +143,7 @@ export function AuditorTab() {
           </button>
         </div>
      
-          <div className="flex overflow-x-auto whitespace-nowrap pb-4 gap-4">
+          <div className="flex flex-wrap pb-4 gap-4">
             {auditors?.map((auditor) => (
               <div
                 key={auditor.name}
@@ -154,7 +158,34 @@ export function AuditorTab() {
               </div>
             ))}
           </div>
-       
+
+          <div className="flex items-center justify-end gap-2 mt-2">
+            <button
+              className="px-3 py-1 text-sm bg-gray-100 rounded-lg disabled:opacity-50"
+              onClick={() =>
+                setPagination((prev) => ({
+                  ...prev,
+                  pageIndex: Math.max(0, prev.pageIndex - 1),
+                }))
+              }
+              disabled={pagination.pageIndex === 0}
+            >
+              {'<'}
+            </button>
+            <button
+              className="px-3 py-1 text-sm bg-gray-100 rounded-lg disabled:opacity-50"
+              onClick={() =>
+                setPagination((prev) => ({
+                  ...prev,
+                  pageIndex: prev.pageIndex + 1,
+                }))
+              }
+              disabled={!auditors || auditors.length < pagination.pageSize}
+            >
+              {'>'}
+            </button>
+          </div>
+
       </div>
 
       {/* Profile Section */}

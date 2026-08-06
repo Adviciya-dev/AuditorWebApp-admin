@@ -26,6 +26,8 @@ function Header() {
                 return 'Customers';
             case '/documents':
                 return 'Documents';
+            case '/reports':
+                return 'Report';
             default:
                 return 'Dashboard';
         }

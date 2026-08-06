@@ -41,3 +41,13 @@ export const getDocumentDetails = async (params,id)=>{
     return []
   }
 }
+
+export const fetchDocumentCustomers = async (params)=>{
+  const response = await ApiCall(API_CONFIG.DOC_URL,"GET",ENDPOINTS.DOCUMENT.CUSTOMERS,null,params);
+  if(response?.status){
+    return response.data
+  }
+  else{
+    return { customers: [], pagination: { currentPage: 1, totalPages: 0, totalCount: 0, limit: params?.limit ?? 10 }, resetsOn: null }
+  }
+}

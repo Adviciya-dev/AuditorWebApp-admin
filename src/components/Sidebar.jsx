@@ -1,7 +1,7 @@
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import { FaHome, FaUserFriends, FaRegFileAlt, FaUsers } from "react-icons/fa";
 import homeIcon from "../assets/HomeHome.svg";
-import { Building2, FileText } from "lucide-react";
+import { Building2, FileBarChart } from "lucide-react";
 function Sidebar() {
   const companyName = localStorage.getItem("auditor_company");
   const address = localStorage.getItem("auditor_address");
@@ -74,6 +74,18 @@ function Sidebar() {
                     <FaUsers className="w-5 h-5 mr-3" />
                     <span>Auditor</span>
                 </NavLink>
+
+        <NavLink
+          to="/reports"
+          className={({ isActive }) =>
+            `flex items-center px-4 py-2 text-[#525866] label-small ${
+              isActive ? "bg-[#368FFD] text-[#ffff] rounded-lg" : ""
+            }`
+          }
+        >
+          <FileBarChart className="w-5 h-5 mr-3" />
+          <span>Report</span>
+        </NavLink>
 
         {/* <NavLink
           to="/customer"

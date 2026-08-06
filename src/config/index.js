@@ -27,7 +27,8 @@ export const API_CONFIG = {
       BASE:"documents/count",
       LIST:"documents/getDocumentsByDate",
       FOLDER:"documents/folder",
-      DOCBYDATE:"documents/getDocumentsByDate"
+      DOCBYDATE:"documents/getDocumentsByDate",
+      CUSTOMERS:"documents/customers"
     }
 
    

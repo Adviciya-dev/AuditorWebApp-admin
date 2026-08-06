@@ -14,6 +14,7 @@ import DocumentViewDays from '../pages/auditorLogin/DocumentViewDays';
 import DocumentViewMonth from '../pages/auditorLogin/DocumentViewMonth';
 import Customer from '../pages/Customer';
 import Home from '../pages/Home';
+import Reports from '../pages/Reports';
 
 
 
@@ -50,6 +51,10 @@ export const protectedRoutes = [
       {
         path: 'documents',
         element: <AuditorDocuments />,
+      },
+      {
+        path: 'reports',
+        element: <Reports />,
       },
       {
         path: 'add-auditor/:auditorId?',
